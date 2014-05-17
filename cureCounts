@@ -1,0 +1,7 @@
+function cureCounts(aff)
+ local totcount = 0
+ for cure, count in pairs(cureCount[aff]) do
+	totcount = totcount + count
+ end
+ return totcount
+end
