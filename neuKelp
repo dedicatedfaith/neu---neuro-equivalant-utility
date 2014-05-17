@@ -1,0 +1,10 @@
+function neuKelp()
+ kelpCount = {
+	["clumsiness"] = 0,
+	["asthma"] = 0,
+	["sensitivity"] = 0,
+	["weariness"] = 0,
+	["hypochondria"] = 0,
+ }
+end
+neuKelp()
