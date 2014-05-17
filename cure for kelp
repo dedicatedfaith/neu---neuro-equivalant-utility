@@ -1,8 +1,11 @@
 kelpRemaining = 0
+kelpTotal = 0
 
 
 function neuCure_kelp(match)
  if target == match then
+ deleteLine()
+ cecho("\n[Target]: <white:dark_green>eats a piece of kelp")
   kelpRetained()
   if kelpRemaining > 0 then
 		  for aff, count in pairs(affCount) do
@@ -12,10 +15,12 @@ function neuCure_kelp(match)
 		  end
 		  for aff, count in pairs(affCount) do
 	   		  if table.contains(kelpCount, aff) and count > 0 then
-			  	affCount[aff] = affCount[aff] - round(100 - 100 / kelpRemaining * cureCounts(aff))
+			  	affCount[aff] = round(affCount[aff]*( (kelpTotal - cureCounts(aff)) / kelpTotal) )
 			  	cecho("\n"..aff.." ("..affCount[aff]..")")
 	   		  end
 		  end
+		  kelpRemaining = 0
+		  kelpTotal = 0
   end
  end
 end
@@ -24,10 +29,25 @@ function kelpRetained()
  for aff, count in pairs(affCount) do
   if table.contains(kelpCount, aff) and count > 0 then
 		  kelpRemaining = kelpRemaining + count
+		  kelpTotal = kelpTotal + 1
   end
  end
  kelpRemaining = math.floor((kelpRemaining / 100) + 0.5)
 end
 
--- totkelpAffs is with count > 0
---probability[aff] = probability[aff] - round(100 - 100 / totkelpAffs * cureCount(aff))." <---!!!!
+-- STILL NOT THRILLED WITH THIS ALGORITHM, I HAVE BEEN PLAYING AROUND WITH THE '/ kelpTotal' PORTION AND CHANGING IT
+-- WITH '/ kelpRemaining' UNSURE WITH THIS PROCESS BUT 'kelpRemaining' SEEMS TO BE MORE ACCURATE
+-- affCount[aff] = round(affCount[aff]*( (kelpTotal - cureCounts(aff)) / kelpTotal) )
+
+-- WITH THIS ALGORITHM IT WILL PUT NUMBERS INTO THE NEGATIVE AND THUSLY WE WILL NEED TO MAKE A REDISTRIBUTION FUNCTION
+-- THIS FUNCTION WILL LOOK AT ALL AFFS WITH A COUNT < 0 THEN CHECK WHAT CURED IT SET THAT NUMBER TO 0 IN THE CURES AND
+-- USE THE REMAINING CURES LEFT TO DISTRIBUE THE NEGATIVE OUT COME TO THAT/THOSE AFFLICTIONS
+-- FOR EXAMPLE1:
+-- TARGET HAS: stupidity/weariness @ 100/100
+-- TARGET FOCUSES
+-- TARGET HAS: stupidity/weariness @ 50/50
+-- TARGET EATS KELP ( so you know the focus cured stupidity)
+-- TARGET HAS: stupidity/weariness @ 50/-50
+-- SO THAT REDISTRIBUTION FUNCTION WOULD THEN TRANSFER THE -50 TO THE 50 AND THEY WOULD BOTH BE 0
+
+
