@@ -1,0 +1,33 @@
+kelpRemaining = 0
+
+
+function neuCure_kelp(match)
+ if target == match then
+  kelpRetained()
+  if kelpRemaining > 0 then
+		  for aff, count in pairs(affCount) do
+			if table.contains(kelpCount, aff) and count > 0 then
+				cureCount[aff]["kelp"] = cureCount[aff]["kelp"] + 1
+			end
+		  end
+		  for aff, count in pairs(affCount) do
+	   		  if table.contains(kelpCount, aff) and count > 0 then
+			  	affCount[aff] = affCount[aff] - round(100 - 100 / kelpRemaining * cureCounts(aff))
+			  	cecho("\n"..aff.." ("..affCount[aff]..")")
+	   		  end
+		  end
+  end
+ end
+end
+
+function kelpRetained()
+ for aff, count in pairs(affCount) do
+  if table.contains(kelpCount, aff) and count > 0 then
+		  kelpRemaining = kelpRemaining + count
+  end
+ end
+ kelpRemaining = math.floor((kelpRemaining / 100) + 0.5)
+end
+
+-- totkelpAffs is with count > 0
+--probability[aff] = probability[aff] - round(100 - 100 / totkelpAffs * cureCount(aff))." <---!!!!
