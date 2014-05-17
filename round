@@ -1,0 +1,8 @@
+function round(num)
+-- local checkZero = num
+-- if checkZero <= 0 then
+--  return affCount[aff]
+-- else
+  return math.floor(num+0.5)
+-- end
+end
